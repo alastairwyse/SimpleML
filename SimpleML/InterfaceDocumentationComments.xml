@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<doc>
+  <assembly>
+    <name>SimpleML</name>
+  </assembly>
+  <members>
+    <member name="T:SimpleML.IHypothesisCalculator">
+      <summary>
+        Defines methods to calculate the result of a hypothesis function.
+      </summary>
+    </member>
+    <member name="M:SimpleML.IHypothesisCalculator.Calculate(SimpleML.Matrix,SimpleML.Matrix)">
+      <summary>
+        Calculates the result of a hypothesis function.
+      </summary>
+      <param name="dataSeries">The data series used in evaluating the hypothesis, stored column-wise in a matrix.</param>
+      <param name="thetaParameters">The parameter values of the hypothesis, stored column-wise in a matrix.</param>
+      <returns>A matrix containing a single column containing the hypothesis evaluation for each item in the data series (the 'm' dimension of the resulting matrix should match the 'm' dimension of the 'dataSeries' parameter).</returns>
+    </member>
+  </members>
+</doc>

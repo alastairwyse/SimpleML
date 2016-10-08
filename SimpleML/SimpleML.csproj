@@ -1,0 +1,106 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{C18EC2A4-7E3C-4FDC-884F-017A27BBD8E9}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SimpleML</RootNamespace>
+    <AssemblyName>SimpleML</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;LOGGING_ON;METRICS_ON</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\SimpleML.xml</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Release\SimpleML.xml</DocumentationFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="ApplicationLogging, Version=1.4.0.1, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\ApplicationLogging.1.4.0.1\lib\net40\ApplicationLogging.dll</HintPath>
+    </Reference>
+    <Reference Include="ApplicationLogging.Adapters">
+      <HintPath>..\packages\ApplicationLogging.1.4.0.1\lib\net40\ApplicationLogging.Adapters.dll</HintPath>
+    </Reference>
+    <Reference Include="ApplicationMetrics, Version=1.4.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\ApplicationMetrics.1.4.0.0\lib\net40\ApplicationMetrics.dll</HintPath>
+    </Reference>
+    <Reference Include="FrameworkAbstraction, Version=1.5.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\FrameworkAbstraction.1.5.0.0\lib\net40\FrameworkAbstraction.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net">
+      <HintPath>..\packages\log4net.2.0.5\lib\net40-full\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\SolutionInfo.cs">
+      <Link>SolutionInfo.cs</Link>
+    </Compile>
+    <Compile Include="FeatureScaler.cs" />
+    <Compile Include="FeatureScalingParameters.cs" />
+    <Compile Include="GradientDescentOptimizer.cs" />
+    <Compile Include="HypothesisCalculatorUtilities.cs" />
+    <Compile Include="IHypothesisCalculator.cs" />
+    <Compile Include="LoggingUtilities.cs" />
+    <Compile Include="LogisticRegressionGradientDescentOptimizer.cs" />
+    <Compile Include="LogisticRegressionHypothesisCalculator.cs" />
+    <Compile Include="MatrixRandomizer.cs" />
+    <Compile Include="MatrixUtilities.cs" />
+    <Compile Include="MetricsUtilities.cs" />
+    <Compile Include="MultivariateLinearRegressionCostSeriesCalculator.cs" />
+    <Compile Include="MultivariateLinearRegressionHypothesisCalculator.cs" />
+    <Compile Include="NullApplicationLogger.cs" />
+    <Compile Include="PolynomialFeatureGenerator.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="InterfaceDocumentationComments.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SimpleML.Containers\SimpleML.Containers.csproj">
+      <Project>{a497cdef-435c-43b9-a07a-4967c12dcdd2}</Project>
+      <Name>SimpleML.Containers</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SimpleML.Metrics\SimpleML.Metrics.csproj">
+      <Project>{d43a2b83-83da-4ee3-90b7-88916025bcc1}</Project>
+      <Name>SimpleML.Metrics</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

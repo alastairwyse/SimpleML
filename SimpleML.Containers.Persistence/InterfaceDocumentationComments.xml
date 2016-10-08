@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<doc>
+  <assembly>
+    <name>SimpleML.Containers.Persistence</name>
+  </assembly>
+  <members>
+    <member name="T:SimpleML.Containers.Persistence.IFile">
+      <summary>
+        Provides an abstraction of the System.IO.File class, to facilitate mocking and unit testing.
+      </summary>
+    </member>
+    <member name="M:SimpleML.Containers.Persistence.IFile.ReadAllLines(System.String)">
+      <summary>
+        Opens a text file, reads all lines of the file, and then closes the file.
+      </summary>
+      <param name="path">The file to open for reading.</param>
+      <returns>A string array containing all lines of the file.</returns>
+    </member>
+  </members>
+</doc>
