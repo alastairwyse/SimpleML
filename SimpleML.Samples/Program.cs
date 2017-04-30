@@ -158,6 +158,8 @@ namespace SimpleML.Samples
             //ProcessGraph("Linear Regression with Feature Scaling and Test Data Cost.xml", "Linear Regression with Feature Scaling, Cost Calculated against Test Data", xmlDataSerializer, "RescaledMatrix");
             //ProcessGraph("Linear Regression with Polynomial Features.xml", "Linear Regression with Polynomial Features", xmlDataSerializer, "RescaledMatrix");
             //ProcessGraph("Linear Regression with Polynomial Features and Test Data Cost.xml", "Linear Regression with Polynomial Features, Cost Calculated against Test Data", xmlDataSerializer, "RescaledMatrix");
+            //ProcessAndCancelGraph("Linear Regression with Polynomial Features.xml", "Cancellation of Processing", xmlDataSerializer);
+            ProcessLogisticRegressionGraph(xmlDataSerializer);
         }
 
         /// <summary>
@@ -190,11 +192,11 @@ namespace SimpleML.Samples
             using (FileApplicationLogger logger = new FileApplicationLogger(LogLevel.Information, '|', "  ", Path.Combine(logFilePath, "SimpleMLSampleLog.txt")))
             using (SizeLimitedBufferProcessor bufferProcessor = new SizeLimitedBufferProcessor(10))
             using (FileMetricLogger metricLogger = new FileMetricLogger('|', Path.Combine(logFilePath, "SimpleMLSampleMetrics.txt"), bufferProcessor, true))
+            using (ModuleGraphProcessor processor = new ModuleGraphProcessor(logger, metricLogger))
             {
                 bufferProcessor.Start();
                 try
                 {
-            using (ModuleGraphProcessor processor = new ModuleGraphProcessor(logger, metricLogger))
                     processor.Process(moduleGraph, false);
                 }
                 finally
