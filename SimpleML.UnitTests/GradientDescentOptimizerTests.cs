@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2016 Alastair Wyse (http://www.oraclepermissiongenerator.net/simpleml/)
+ * Copyright 2017 Alastair Wyse (http://www.oraclepermissiongenerator.net/simpleml/)
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using NUnit.Framework;
 using NMock2;
 using SimpleML;
@@ -32,8 +33,8 @@ namespace SimpleML.UnitTests
     public class GradientDescentOptimizerTests
     {
         private Mockery mockery;
-
-        IHypothesisCalculator mockHypothesisCalculator;
+        private IHypothesisCalculator mockHypothesisCalculator;
+        private ICostFunctionCalculator mockCostFunctionCalculator;
         private GradientDescentOptimizer testGradientDescentOptimizer;
 
         [SetUp]
@@ -41,6 +42,7 @@ namespace SimpleML.UnitTests
         {
             mockery = new Mockery();
             mockHypothesisCalculator = mockery.NewMock<IHypothesisCalculator>();
+            mockCostFunctionCalculator = mockery.NewMock<ICostFunctionCalculator>();
             testGradientDescentOptimizer = new GradientDescentOptimizer();
         }
 
@@ -52,14 +54,14 @@ namespace SimpleML.UnitTests
         {
             Matrix trainingDataSeries = new Matrix(100, 3);
             Matrix trainingDataResults = new Matrix(100, 1);
-            Matrix initialThetaParameters = new Matrix(5, 1);
+            Matrix initialThetaParameters = new Matrix(4, 1);
 
             ArgumentException e = Assert.Throws<ArgumentException>(delegate
             {
-                testGradientDescentOptimizer.Optimize(initialThetaParameters, trainingDataSeries, trainingDataResults, mockHypothesisCalculator, 1, 1);
+                testGradientDescentOptimizer.Optimize(initialThetaParameters, trainingDataSeries, trainingDataResults, mockHypothesisCalculator, mockCostFunctionCalculator, 1, 1);
             });
 
-            Assert.That(e.Message, NUnit.Framework.Does.StartWith("The 'm' dimension of parameter 'initialThetaParameters' must be 1 greater than the 'n' dimension of parameter 'trainingDataSeries'."));
+            Assert.That(e.Message, NUnit.Framework.Does.StartWith("The 'm' dimension of parameter 'initialThetaParameters' must match the 'n' dimension of parameter 'trainingDataSeries'."));
             Assert.AreEqual("initialThetaParameters", e.ParamName);
         }
 
@@ -71,11 +73,11 @@ namespace SimpleML.UnitTests
         {
             Matrix trainingDataSeries = new Matrix(100, 3);
             Matrix trainingDataResults = new Matrix(99, 1);
-            Matrix initialThetaParameters = new Matrix(4, 1);
+            Matrix initialThetaParameters = new Matrix(3, 1);
 
             ArgumentException e = Assert.Throws<ArgumentException>(delegate
             {
-                testGradientDescentOptimizer.Optimize(initialThetaParameters, trainingDataSeries, trainingDataResults, mockHypothesisCalculator, 1, 1);
+                testGradientDescentOptimizer.Optimize(initialThetaParameters, trainingDataSeries, trainingDataResults, mockHypothesisCalculator, mockCostFunctionCalculator, 1, 1);
             });
 
             Assert.That(e.Message, NUnit.Framework.Does.StartWith("Parameters 'trainingDataSeries' and 'trainingDataResults' have differing 'm' dimensions."));
@@ -90,11 +92,11 @@ namespace SimpleML.UnitTests
         {
             Matrix trainingDataSeries = new Matrix(100, 3);
             Matrix trainingDataResults = new Matrix(100, 2);
-            Matrix initialThetaParameters = new Matrix(4, 1);
+            Matrix initialThetaParameters = new Matrix(3, 1);
 
             ArgumentException e = Assert.Throws<ArgumentException>(delegate
             {
-                testGradientDescentOptimizer.Optimize(initialThetaParameters, trainingDataSeries, trainingDataResults, mockHypothesisCalculator, 1, 1);
+                testGradientDescentOptimizer.Optimize(initialThetaParameters, trainingDataSeries, trainingDataResults, mockHypothesisCalculator, mockCostFunctionCalculator, 1, 1);
             });
 
             Assert.That(e.Message, NUnit.Framework.Does.StartWith("The parameter 'trainingDataResults' must be a single column matrix (i.e. 'n' dimension equal to 1)."));
@@ -109,11 +111,11 @@ namespace SimpleML.UnitTests
         {
             Matrix trainingDataSeries = new Matrix(100, 3);
             Matrix trainingDataResults = new Matrix(100, 1);
-            Matrix initialThetaParameters = new Matrix(4, 2);
+            Matrix initialThetaParameters = new Matrix(3, 2);
 
             ArgumentException e = Assert.Throws<ArgumentException>(delegate
             {
-                testGradientDescentOptimizer.Optimize(initialThetaParameters, trainingDataSeries, trainingDataResults, mockHypothesisCalculator, 1, 1);
+                testGradientDescentOptimizer.Optimize(initialThetaParameters, trainingDataSeries, trainingDataResults, mockHypothesisCalculator, mockCostFunctionCalculator, 1, 1);
             });
 
             Assert.That(e.Message, NUnit.Framework.Does.StartWith("The parameter 'initialThetaParameters' must be a single column matrix (i.e. 'n' dimension equal to 1)."));
@@ -128,11 +130,11 @@ namespace SimpleML.UnitTests
         {
             Matrix trainingDataSeries = new Matrix(100, 3);
             Matrix trainingDataResults = new Matrix(100, 1);
-            Matrix initialThetaParameters = new Matrix(4, 1);
+            Matrix initialThetaParameters = new Matrix(3, 1);
 
             ArgumentException e = Assert.Throws<ArgumentException>(delegate
             {
-                testGradientDescentOptimizer.Optimize(initialThetaParameters, trainingDataSeries, trainingDataResults, mockHypothesisCalculator, 0, 1);
+                testGradientDescentOptimizer.Optimize(initialThetaParameters, trainingDataSeries, trainingDataResults, mockHypothesisCalculator, mockCostFunctionCalculator, 0, 1);
             });
 
             Assert.That(e.Message, NUnit.Framework.Does.StartWith("The parameter 'learningRate' must be positive."));
@@ -147,11 +149,11 @@ namespace SimpleML.UnitTests
         {
             Matrix trainingDataSeries = new Matrix(100, 3);
             Matrix trainingDataResults = new Matrix(100, 1);
-            Matrix initialThetaParameters = new Matrix(4, 1);
+            Matrix initialThetaParameters = new Matrix(3, 1);
 
             ArgumentException e = Assert.Throws<ArgumentException>(delegate
             {
-                testGradientDescentOptimizer.Optimize(initialThetaParameters, trainingDataSeries, trainingDataResults, mockHypothesisCalculator, 1, 0);
+                testGradientDescentOptimizer.Optimize(initialThetaParameters, trainingDataSeries, trainingDataResults, mockHypothesisCalculator, mockCostFunctionCalculator, 1, 0);
             });
 
             Assert.That(e.Message, NUnit.Framework.Does.StartWith("The parameter 'maxIterations' must be a positive integer."));
@@ -165,21 +167,21 @@ namespace SimpleML.UnitTests
         public void Optimize_HypothesisCalculatorReturnsIncorrectMDimension()
         {
             Matrix initialThetaParameters = new Matrix(2, 1, new Double[] { 0.5, 0.5 });
-            Matrix trainingDataSeries = new Matrix(2, 1, new Double[] { 5, 2 });
+            Matrix trainingDataSeries = new Matrix(2, 2, new Double[] { 1, 5, 1, 2 });
             Matrix trainingDataResults = new Matrix(2, 1, new Double[] { 1, 6 });
-            Matrix biasedTrainingDataSeries = new Matrix(2, 2, new Double[] { 1, 5, 1, 2 });
 
             using (mockery.Ordered)
             {
-                Expect.Once.On(mockHypothesisCalculator).Method("Calculate").With(new MatrixMatcher(biasedTrainingDataSeries), new MatrixMatcher(new Matrix(2, 1, new Double[] { 0.5, 0.5 }))).Will(Return.Value(new Matrix(3, 1, new Double[] { 3, 1.5, 1 })));
+                Expect.Once.On(mockHypothesisCalculator).Method("Calculate").With(new MatrixMatcher(trainingDataSeries), new MatrixMatcher(new Matrix(2, 1, new Double[] { 0.5, 0.5 }))).Will(Return.Value(new Matrix(3, 1, new Double[] { 3, 1.5, 1 })));
             }
 
             Exception e = Assert.Throws<Exception>(delegate
             {
-                testGradientDescentOptimizer.Optimize(initialThetaParameters, trainingDataSeries, trainingDataResults, mockHypothesisCalculator, 1, 1);
+                testGradientDescentOptimizer.Optimize(initialThetaParameters, trainingDataSeries, trainingDataResults, mockHypothesisCalculator, mockCostFunctionCalculator, 1, 1);
             });
 
             Assert.That(e.Message, NUnit.Framework.Does.StartWith("Hypothesis values returned by method hypothesisCalculator.Calculate() has 'm' dimension length 3.  Expected length 2."));
+            mockery.VerifyAllExpectationsHaveBeenMet();
         }
 
         /// <summary>
@@ -189,22 +191,21 @@ namespace SimpleML.UnitTests
         public void Optimize_HypothesisCalculatorReturnsIncorrectNDimension()
         {
             Matrix initialThetaParameters = new Matrix(2, 1, new Double[] { 0.5, 0.5 });
-            Matrix trainingDataSeries = new Matrix(2, 1, new Double[] { 5, 2 });
+            Matrix trainingDataSeries = new Matrix(2, 2, new Double[] { 1, 5, 1, 2 });
             Matrix trainingDataResults = new Matrix(2, 1, new Double[] { 1, 6 });
-            Matrix biasedTrainingDataSeries = new Matrix(2, 2, new Double[] { 1, 5, 1, 2 });
 
             using (mockery.Ordered)
             {
-                Expect.Once.On(mockHypothesisCalculator).Method("Calculate").With(new MatrixMatcher(biasedTrainingDataSeries), new MatrixMatcher(new Matrix(2, 1, new Double[] { 0.5, 0.5 }))).Will(Return.Value(new Matrix(2, 2, new Double[] { 3, 1.5, 1, 2 })));
+                Expect.Once.On(mockHypothesisCalculator).Method("Calculate").With(new MatrixMatcher(trainingDataSeries), new MatrixMatcher(new Matrix(2, 1, new Double[] { 0.5, 0.5 }))).Will(Return.Value(new Matrix(2, 2, new Double[] { 3, 1.5, 1, 2 })));
             }
 
             Exception e = Assert.Throws<Exception>(delegate
             {
-                testGradientDescentOptimizer.Optimize(initialThetaParameters, trainingDataSeries, trainingDataResults, mockHypothesisCalculator, 1, 1);
+                testGradientDescentOptimizer.Optimize(initialThetaParameters, trainingDataSeries, trainingDataResults, mockHypothesisCalculator, mockCostFunctionCalculator, 1, 1);
             });
 
             Assert.That(e.Message, NUnit.Framework.Does.StartWith("Hypothesis values returned by method hypothesisCalculator.Calculate() has 'n' dimension length 2.  Expected length 1."));
-
+            mockery.VerifyAllExpectationsHaveBeenMet();
         }
 
         /// <summary>
@@ -213,21 +214,75 @@ namespace SimpleML.UnitTests
         [Test]
         public void Optimize()
         {
+            // Have to use the below double values inside matricies which are compared using NMock2 Expect statements.
+            //   e.g. for the second theta parameter in iteration 3, both the expected and actual double values ToString() to 0.42875, but are not considered equal.
+            //   If you calculate the expected values below by the same method as the actual values, they are considered equal, and the Expect statements then work.
+            Double iteration3ThetaParameter2 = 0.45 - (0.1 * (1.0 / 2.0) * 0.425000000000001);
+            Double iteration4ThetaParameter2 = iteration3ThetaParameter2 - (0.1 * (1.0 / 2.0) * 0.71875);
+            Double iteration5ThetaParameter2 = iteration4ThetaParameter2 - (0.1 * (1.0 / 2.0) * 0.547625);
+
             Matrix initialThetaParameters = new Matrix(2, 1, new Double[] { 0.5, 0.5 });
-            Matrix trainingDataSeries = new Matrix(2, 1, new Double[] { 5, 2 });
+            Matrix trainingDataSeries = new Matrix(2, 2, new Double[] { 1, 5, 1, 2 });
             Matrix trainingDataResults = new Matrix(2, 1, new Double[] { 1, 6 });
-            Matrix biasedTrainingDataSeries = new Matrix(2, 2, new Double[] { 1, 5, 1, 2 });
 
             using (mockery.Ordered)
             {
-                Expect.Once.On(mockHypothesisCalculator).Method("Calculate").With(new MatrixMatcher(biasedTrainingDataSeries), new MatrixMatcher(new Matrix(2, 1, new Double[] { 0.5, 0.5 }))).Will(Return.Value(new Matrix(2, 1, new Double[] { 3, 1.5 })));
-                Expect.Once.On(mockHypothesisCalculator).Method("Calculate").With(new MatrixMatcher(biasedTrainingDataSeries), new MatrixMatcher(new Matrix(2, 1, new Double[] { 0.625, 0.45 }))).Will(Return.Value(new Matrix(2, 1, new Double[] { 2.875, 1.525 })));
+                Expect.Once.On(mockHypothesisCalculator).Method("Calculate").With(new MatrixMatcher(trainingDataSeries), new MatrixMatcher(new Matrix(2, 1, new Double[] { 0.5, 0.5 }))).Will(Return.Value(new Matrix(2, 1, new Double[] { 3, 1.5 })));
+                Expect.Once.On(mockCostFunctionCalculator).Method("Calculate").With(new MatrixMatcher(trainingDataSeries), new MatrixMatcher(trainingDataResults), new MatrixMatcher(new Matrix(2, 1, new Double[] { 0.5, 0.5 }))).Will(Return.Value(6.0625));
+                Expect.Once.On(mockHypothesisCalculator).Method("Calculate").With(new MatrixMatcher(trainingDataSeries), new MatrixMatcher(new Matrix(2, 1, new Double[] { 0.625, 0.45 }))).Will(Return.Value(new Matrix(2, 1, new Double[] { 2.875, 1.525 })));
+                Expect.Once.On(mockCostFunctionCalculator).Method("Calculate").With(new MatrixMatcher(trainingDataSeries), new MatrixMatcher(trainingDataResults), new MatrixMatcher(new Matrix(2, 1, new Double[] { 0.625, 0.45 }))).Will(Return.Value(5.8853125));
+                Expect.Once.On(mockHypothesisCalculator).Method("Calculate").With(new MatrixMatcher(trainingDataSeries), new MatrixMatcher(new Matrix(2, 1, new Double[] { 0.755, iteration3ThetaParameter2 }))).Will(Return.Value(new Matrix(2, 1, new Double[] { 2.89875, 1.6125 })));
+                Expect.Once.On(mockCostFunctionCalculator).Method("Calculate").With(new MatrixMatcher(trainingDataSeries), new MatrixMatcher(trainingDataResults), new MatrixMatcher(new Matrix(2, 1, new Double[] { 0.755, iteration3ThetaParameter2 }))).Will(Return.Value(5.713851953125));
+                Expect.Once.On(mockHypothesisCalculator).Method("Calculate").With(new MatrixMatcher(trainingDataSeries), new MatrixMatcher(new Matrix(2, 1, new Double[] { 0.8794375, iteration4ThetaParameter2 }))).Will(Return.Value(new Matrix(2, 1, new Double[] { 2.8435, 1.6650625 })));
+                Expect.Once.On(mockCostFunctionCalculator).Method("Calculate").With(new MatrixMatcher(trainingDataSeries), new MatrixMatcher(trainingDataResults), new MatrixMatcher(new Matrix(2, 1, new Double[] { 0.8794375, iteration4ThetaParameter2 }))).Will(Return.Value(5.54754384472656));
+                Expect.Once.On(mockHypothesisCalculator).Method("Calculate").With(new MatrixMatcher(trainingDataSeries), new MatrixMatcher(new Matrix(2, 1, new Double[] { 1.004009375, iteration5ThetaParameter2 }))).Will(Return.Value(new Matrix(2, 1, new Double[] { 2.831165625, 1.734871875 })));
+                Expect.Once.On(mockCostFunctionCalculator).Method("Calculate").With(new MatrixMatcher(trainingDataSeries), new MatrixMatcher(trainingDataResults), new MatrixMatcher(new Matrix(2, 1, new Double[] { 1.004009375, iteration5ThetaParameter2 }))).Will(Return.Value(5.38612136721192));
             }
 
-            Matrix results = testGradientDescentOptimizer.Optimize(initialThetaParameters, trainingDataSeries, trainingDataResults, mockHypothesisCalculator, 0.1, 2);
+            Matrix results = testGradientDescentOptimizer.Optimize(initialThetaParameters, trainingDataSeries, trainingDataResults, mockHypothesisCalculator, mockCostFunctionCalculator, 0.1, 5);
 
-            Assert.That(results.GetElement(1, 1), NUnit.Framework.Is.EqualTo(0.755).Within(1e-3));
-            Assert.That(results.GetElement(2, 1), NUnit.Framework.Is.EqualTo(0.42875).Within(1e-5));
+            Assert.That(results.GetElement(1, 1), NUnit.Framework.Is.EqualTo(1.1257075).Within(1e-7));
+            Assert.That(results.GetElement(2, 1), NUnit.Framework.Is.EqualTo(0.33415265625).Within(1e-12));
+            mockery.VerifyAllExpectationsHaveBeenMet();
+        }
+
+        /// <summary>
+        /// Tests that Optimize() method throws an OperationCanceledException is the CancellationToken is set as cancelled.
+        /// </summary>
+        [Test]
+        public void Optimize_Cancelled()
+        {
+            Matrix initialThetaParameters = new Matrix(2, 1, new Double[] { 0.5, 0.5 });
+            Matrix trainingDataSeries = new Matrix(2, 2, new Double[] { 1, 5, 1, 2 });
+            Matrix trainingDataResults = new Matrix(2, 1, new Double[] { 1, 6 });
+
+            using (AutoResetEvent autoResetEvent = new AutoResetEvent(false))
+            {
+                // This NMock IAction is used to signal cancellation to occur after 100 gradient descent iterations
+                //   Is triggered each time the below Expect on the mockCostFunctionCalculator is called, and signals the AutoResetEvent after 100 triggers
+                SignalAfterIterationsAction signalAfterIterationsAction = new SignalAfterIterationsAction(autoResetEvent, 100);
+                Expect.On(mockHypothesisCalculator).Method("Calculate").WithAnyArguments().Will(Return.Value(new Matrix(2, 1, new Double[] { 3, 1.5 })));
+                Expect.On(mockCostFunctionCalculator).Method("Calculate").WithAnyArguments().Will(Return.Value(6.0625), signalAfterIterationsAction);
+
+                using (CancellationTokenSource cancellationTokenSource = new CancellationTokenSource())
+                {
+                    testGradientDescentOptimizer = new GradientDescentOptimizer(cancellationTokenSource.Token);
+                    Thread cancellationThread = new Thread
+                        (() =>
+                        {
+                            autoResetEvent.WaitOne();
+                            cancellationTokenSource.Cancel();
+                        }
+                        );
+                    cancellationThread.Start();
+                    OperationCanceledException e = Assert.Throws<OperationCanceledException>(delegate
+                    {
+                        testGradientDescentOptimizer.Optimize(initialThetaParameters, trainingDataSeries, trainingDataResults, mockHypothesisCalculator, mockCostFunctionCalculator, 0.1, 5000);
+                    });
+                }
+            }
+
+            mockery.VerifyAllExpectationsHaveBeenMet();
         }
     }
 }

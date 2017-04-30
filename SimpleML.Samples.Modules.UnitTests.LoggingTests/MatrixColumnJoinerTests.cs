@@ -68,6 +68,28 @@ namespace SimpleML.Samples.Modules.UnitTests.LoggingTests
 
             Assert.That(e.Message, NUnit.Framework.Does.StartWith("The 'm' dimension of parameter 'rightMatrix' '1' does not match the 'm' dimension of parameter 'leftMatrix' '2'."));
             Assert.AreEqual("rightMatrix", e.ParamName);
+            mockery.VerifyAllExpectationsHaveBeenMet();
+        }
+
+        /// <summary>
+        /// Tests the logging functionality in the ImplementProcess() method.
+        /// </summary>
+        [Test]
+        public void ImplementProcess()
+        {
+            Matrix leftMatrix = new Matrix(2, 3, new Double[] { 1.0, 2.0, 3.0, 4.0, 5.0, 6.0 });
+            Matrix rightMatrix = new Matrix(2, 1, new Double[] { 7.0, 8.0 });
+            testMatrixColumnJoiner.GetInputSlot("LeftMatrix").DataValue = leftMatrix;
+            testMatrixColumnJoiner.GetInputSlot("RightMatrix").DataValue = rightMatrix;
+
+            using (mockery.Ordered)
+            {
+                Expect.Once.On(mockApplicationLogger).Method("Log").With(testMatrixColumnJoiner, LogLevel.Information, "Joined matrices column-wise to produce a 2 x 4 matrix.");
+            }
+
+            testMatrixColumnJoiner.Process();
+
+            mockery.VerifyAllExpectationsHaveBeenMet();
         }
     }
 }

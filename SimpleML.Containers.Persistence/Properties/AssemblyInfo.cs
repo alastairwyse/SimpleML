@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("SimpleML.Containers.Persistence")]
-[assembly: AssemblyDescription("Provides persistence of SimpleML classes.")]
+[assembly: AssemblyDescription("Provides persistence of SimpleML container classes.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("SimpleML.Containers.Persistence")]

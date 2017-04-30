@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ModuleGraph>
-  <AssemblyPath>C:\Development\C#\SimpleML\SimpleML.Samples\bin\Debug</AssemblyPath>
+  <AssemblyPath>.\</AssemblyPath>
   <EndPointModules>
     <Module>
       <Id>1</Id>

@@ -35,8 +35,8 @@ namespace SimpleML.Samples.Modules
     {
         public CsvFileReadTime()
         {
-            base.name = "CsvFileRead";
-            base.description = "The number of CSV files read";
+            base.name = "CsvFileReadTime";
+            base.description = "The time taken to read a CSV file";
         }
     }
 
@@ -64,6 +64,24 @@ namespace SimpleML.Samples.Modules
         {
             base.name = "MatrixFeaturesRescaled";
             base.description = "The number of matrices feature rescaled";
+        }
+    }
+
+    public class MultiParameterTrainingIteration : CountMetric
+    {
+        public MultiParameterTrainingIteration()
+        {
+            base.name = "MultiParameterTrainingIteration";
+            base.description = "The number of iterations of function minimization training run by the MultiParameterTrainer class";
+        }
+    }
+
+    public class MultiParameterTrainingTime : IntervalMetric
+    {
+        public MultiParameterTrainingTime()
+        {
+            base.name = "MultiParameterTrainingTime";
+            base.description = "The time taken to run multiple iterations of function minimization";
         }
     }
 }

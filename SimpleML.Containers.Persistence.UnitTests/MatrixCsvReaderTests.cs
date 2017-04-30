@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using FrameworkAbstraction;
 using NUnit.Framework;
 using NMock2;
 
@@ -42,7 +43,7 @@ namespace SimpleML.Containers.Persistence.UnitTests
         }
 
         /// <summary>
-        /// Test that an exception is thrown if the Read() method is called with 'startColumn' parameter value less than 1.
+        /// Tests that an exception is thrown if the Read() method is called with 'startColumn' parameter value less than 1.
         /// </summary>
         [Test]
         public void Read_StartColumnParameterLessThan1()
@@ -57,7 +58,7 @@ namespace SimpleML.Containers.Persistence.UnitTests
         }
 
         /// <summary>
-        /// Test that an exception is thrown if the Read() method is called with 'numberOfColumns' parameter value less than 1.
+        /// Tests that an exception is thrown if the Read() method is called with 'numberOfColumns' parameter value less than 1.
         /// </summary>
         [Test]
         public void Read_NumberOfColumnsParameterLessThan1()
@@ -72,7 +73,7 @@ namespace SimpleML.Containers.Persistence.UnitTests
         }
 
         /// <summary>
-        /// Test that an exception is thrown if the Read() method is called on a file which cannot be opened.
+        /// Tests that an exception is thrown if the Read() method is called on a file which cannot be opened.
         /// </summary>
         [Test]
         public void Read_UnableToOpenFile()
@@ -88,10 +89,12 @@ namespace SimpleML.Containers.Persistence.UnitTests
             });
 
             Assert.That(e.Message, NUnit.Framework.Does.StartWith("Unable to read from file '" + testFilePath + "'."));
+
+            mockery.VerifyAllExpectationsHaveBeenMet();
         }
 
         /// <summary>
-        /// Test that an exception is thrown if the Read() method is called on a file which has insufficient columns in one of its rows.
+        /// Tests that an exception is thrown if the Read() method is called on a file which has insufficient columns in one of its rows.
         /// </summary>
         [Test]
         public void Read_RowContainsInsufficientColumns()
@@ -112,10 +115,12 @@ namespace SimpleML.Containers.Persistence.UnitTests
             });
 
             Assert.That(e.Message, NUnit.Framework.Does.StartWith("Row 2 of the file does not contain enough columns.  Expected 3 but found 2."));
+
+            mockery.VerifyAllExpectationsHaveBeenMet();
         }
 
         /// <summary>
-        /// Test that an exception is thrown if the Read() method is called on a file which contains non-numeric data.
+        /// Tests that an exception is thrown if the Read() method is called on a file which contains non-numeric data.
         /// </summary>
         [Test]
         public void Read_CellContainsNonNumericData()
@@ -136,6 +141,8 @@ namespace SimpleML.Containers.Persistence.UnitTests
             });
 
             Assert.That(e.Message, NUnit.Framework.Does.StartWith("CSV element at row 3, column 2 'eight' could not be converted to a number."));
+
+            mockery.VerifyAllExpectationsHaveBeenMet();
         }
 
         /// <summary>
@@ -172,6 +179,8 @@ namespace SimpleML.Containers.Persistence.UnitTests
             Assert.AreEqual(1, result.NDimension);
             Assert.AreEqual(0.3, result.GetElement(1, 1));
             Assert.AreEqual(0.7, result.GetElement(2, 1));
+
+            mockery.VerifyAllExpectationsHaveBeenMet();
         }
     }
 }

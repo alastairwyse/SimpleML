@@ -192,5 +192,25 @@ namespace SimpleML.UnitTests
             Assert.That(resultMatrix.GetElement(2, 4), NUnit.Framework.Is.EqualTo(9.0).Within(1e-1));
             Assert.That(resultMatrix.GetElement(2, 5), NUnit.Framework.Is.EqualTo(10.0).Within(1e-1));
         }
+
+        /// <summary>
+        /// Success tests for the Copy() method.
+        /// </summary>
+        [Test]
+        public void Copy()
+        {
+            Matrix inputMatrix = new Matrix(2, 3, new Double[] { -3.0, -0.1, 0, 7.0, 14.23, 1234.56 });
+
+            Matrix resultMatrix = testMatrixUtilities.Copy(inputMatrix);
+
+            Assert.AreEqual(2, resultMatrix.MDimension);
+            Assert.AreEqual(3, resultMatrix.NDimension);
+            Assert.That(resultMatrix.GetElement(1, 1), NUnit.Framework.Is.EqualTo(-3.0).Within(1e-1));
+            Assert.That(resultMatrix.GetElement(1, 2), NUnit.Framework.Is.EqualTo(-0.1).Within(1e-2));
+            Assert.That(resultMatrix.GetElement(1, 3), NUnit.Framework.Is.EqualTo(0.0).Within(1e-1));
+            Assert.That(resultMatrix.GetElement(2, 1), NUnit.Framework.Is.EqualTo(7.0).Within(1e-1));
+            Assert.That(resultMatrix.GetElement(2, 2), NUnit.Framework.Is.EqualTo(14.23).Within(1e-3));
+            Assert.That(resultMatrix.GetElement(2, 3), NUnit.Framework.Is.EqualTo(1234.56).Within(1e-3));
+        }
     }
 }

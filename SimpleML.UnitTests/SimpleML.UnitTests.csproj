@@ -30,7 +30,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="NMock2">
+    <Reference Include="NMock2, Version=2.0.0.44, Culture=neutral, PublicKeyToken=37d3be0adc87c2b7, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Referenced Libraries\NMock2.dll</HintPath>
     </Reference>
     <Reference Include="nunit.framework, Version=3.4.1.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
@@ -50,14 +51,24 @@
       <Link>SolutionInfo.cs</Link>
     </Compile>
     <Compile Include="FeatureScalerTests.cs" />
+    <Compile Include="FunctionMinimizerTests.cs" />
     <Compile Include="GradientDescentOptimizerTests.cs" />
     <Compile Include="HypothesisCalculatorUtilitiesTests.cs" />
+    <Compile Include="LogisticRegressionCostFunctionCalculatorTests.cs" />
+    <Compile Include="LogisticRegressionErrorRateCalculatorTests.cs" />
+    <Compile Include="LogisticRegressionHypothesisCalculatorTests.cs" />
+    <Compile Include="MatrixRandomizerTests.cs" />
     <Compile Include="MatrixUtilitiesTests.cs" />
     <Compile Include="MultivariateLinearRegressionCostSeriesCalculatorTests.cs" />
     <Compile Include="PolynomialFeatureGeneratorTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SignalAfterIterationsAction.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\SimpleML.Containers.Persistence\SimpleML.Containers.Persistence.csproj">
+      <Project>{117f30fc-2763-4184-bcf9-c65a45353559}</Project>
+      <Name>SimpleML.Containers.Persistence</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SimpleML.Containers.UnitTests\SimpleML.Containers.UnitTests.csproj">
       <Project>{bc217db6-f7d2-4169-a820-69b7f088d963}</Project>
       <Name>SimpleML.Containers.UnitTests</Name>
@@ -73,6 +84,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <None Include="Resources\FunctionMinimizer Test Data.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -27,8 +27,6 @@ namespace SimpleML
     /// </summary>
     public class LogisticRegressionHypothesisCalculator : IHypothesisCalculator
     {
-        // TODO: Need to create unit tests for this class
-
         HypothesisCalculatorUtilities hypothesisCalculatorutilities;
 
         /// <summary>

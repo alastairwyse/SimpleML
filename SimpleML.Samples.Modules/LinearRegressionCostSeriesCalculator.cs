@@ -30,6 +30,9 @@ namespace SimpleML.Samples.Modules
     /// </summary>
     public class LinearRegressionCostSeriesCalculator : ModuleBase
     {
+        // TODO: At some point, should probably rename this whole class to just 'LinearRegressionCostCalculator'.
+        //   However will need to rename module in XML workflow templates, + change documentation / website, etc...
+
         private const String trainingSeriesDataInputSlotName = "TrainingSeriesData";
         private const String trainingSeriesResultsInputSlotName = "TrainingSeriesResults";
         private const String thetaParametersInputSlotName = "ThetaParameters";
@@ -41,7 +44,7 @@ namespace SimpleML.Samples.Modules
         public LinearRegressionCostSeriesCalculator()
             : base()
         {
-            Description = "Calculates the linear regression cost for a specified set of theta parameters";
+            Description = "Adds a bias term to the data series, and then calculates the linear regression cost for the specified set of theta parameters";
             AddInputSlot(trainingSeriesDataInputSlotName, "The training data series, stored column-wise in a matrix", typeof(Matrix));
             AddInputSlot(trainingSeriesResultsInputSlotName, "The training data results, stored as a single column matrix", typeof(Matrix));
             AddInputSlot(thetaParametersInputSlotName, "The theta parameter values to use in the cost calculation", typeof(Matrix));
@@ -54,10 +57,21 @@ namespace SimpleML.Samples.Modules
             Matrix trainingSeriesResults = (Matrix)GetInputSlot(trainingSeriesResultsInputSlotName).DataValue;
             Matrix thetaParameters = (Matrix)GetInputSlot(thetaParametersInputSlotName).DataValue;
 
+            if (trainingSeriesData.NDimension != (thetaParameters.MDimension - 1))
+            {
+                String message = "The 'm' dimension of parameter '" + thetaParametersInputSlotName + "' must be 1 greater than the 'n' dimension of parameter '" + trainingSeriesDataInputSlotName + "'.";
+                ArgumentException e = new ArgumentException(message, thetaParametersInputSlotName);
+                logger.Log(this, LogLevel.Critical, message, e);
+                throw e;
+            }
+
             try
             {
-                MultivariateLinearRegressionCostSeriesCalculator costSeriesCalculator = new MultivariateLinearRegressionCostSeriesCalculator();
-                Double cost = costSeriesCalculator.CalculateCost(trainingSeriesData, trainingSeriesResults, thetaParameters);
+                MatrixUtilities matrixUtilities = new MatrixUtilities();
+                // Add a column of 1's to the training data
+                Matrix biasedTrainingDataSeries = matrixUtilities.AddColumns(trainingSeriesData, 1, true, 1);
+                MultivariateLinearRegressionCostFunctionCalculator costFunctionCalculator = new MultivariateLinearRegressionCostFunctionCalculator();
+                Double cost = costFunctionCalculator.Calculate(biasedTrainingDataSeries, trainingSeriesResults, thetaParameters);
                 GetOutputSlot(costOutputSlotName).DataValue = cost;
             }
             catch (Exception e)

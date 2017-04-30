@@ -50,8 +50,8 @@ namespace SimpleML.Samples.Modules
 
         protected override void ImplementProcess()
         {
-            // TODO: Look at possibility of storing slot types as local constants, and having a utility method on ModuleBase to cast bast on type in a variable
-            //       e.g. public T ConvertType<T>(onject input)
+            // TODO: Look at possibility of storing slot types as local constants, and having a utility method on ModuleBase to cast based on type in a variable
+            //       e.g. public T ConvertType<T>(object input)
             String csvFilePath = (String)GetInputSlot(csvFilePathInputSlotName).DataValue;
             Int32 startColumn = (Int32)GetInputSlot(startColumnInputSlotName).DataValue;
             Int32 numberOfColumns = (Int32)GetInputSlot(numberOfColumnsInputSlotName).DataValue;

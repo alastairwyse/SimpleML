@@ -46,13 +46,39 @@ namespace SimpleML.Samples.Modules.UnitTests.LoggingTests
         }
 
         /// <summary>
+        /// Tests the logging functionality when the ImplementProcess() method is called with 'ThetaParameters' and 'TrainingSeriesData' input data with incompatible dimensions.
+        /// </summary>
+        [Test]
+        public void ImplementProcess_TrainingSeriesDataAndThetaParametersDimensionMismatch()
+        {
+            Matrix trainingSeriesData = new Matrix(4, 3, new Double[] { 1, 2, 3, 1, 3, 4, 1, 4, 5, 1, 5, 6 });
+            Matrix trainingSeriesResults = new Matrix(4, 1, new Double[] { 7, 6, 5, 4 });
+            Matrix thetaParameters = new Matrix(3, 1, new Double[] { 0.1, 0.2, 0.3 });
+            testLinearRegressionCostSeriesCalculator.GetInputSlot("TrainingSeriesData").DataValue = trainingSeriesData;
+            testLinearRegressionCostSeriesCalculator.GetInputSlot("TrainingSeriesResults").DataValue = trainingSeriesResults;
+            testLinearRegressionCostSeriesCalculator.GetInputSlot("ThetaParameters").DataValue = thetaParameters;
+
+            using (mockery.Ordered)
+            {
+                Expect.Once.On(mockApplicationLogger).Method("Log").With(testLinearRegressionCostSeriesCalculator, LogLevel.Critical, "The 'm' dimension of parameter 'ThetaParameters' must be 1 greater than the 'n' dimension of parameter 'TrainingSeriesData'.", new TypeMatcher(typeof(ArgumentException)));
+            }
+
+            ArgumentException e = Assert.Throws<ArgumentException>(delegate
+            {
+                testLinearRegressionCostSeriesCalculator.Process();
+            });
+
+            mockery.VerifyAllExpectationsHaveBeenMet();
+        }
+
+        /// <summary>
         /// Tests the logging functionality when an exception occurs in the ImplementProcess() method.
         /// </summary>
         [Test]
         public void ImplementProcess_Exception()
         {
-            Matrix trainingSeriesData = new Matrix(2, 3, new Double[] { 1.0, 2.0, 3.0, 4.0, 5.0, 6.0 });
-            Matrix trainingSeriesResults = new Matrix(2, 1, new Double[] { 7.0, 8.0 });
+            Matrix trainingSeriesData = new Matrix(2, 1, new Double[] { 1.0, 2.0 });
+            Matrix trainingSeriesResults = new Matrix(2, 2, new Double[] { 3.0, 4.0, 7.0, 8.0 });
             Matrix thetaParameters = new Matrix(2, 1, new Double[] { 9.0, 10.0 });
             testLinearRegressionCostSeriesCalculator.GetInputSlot("TrainingSeriesData").DataValue = trainingSeriesData;
             testLinearRegressionCostSeriesCalculator.GetInputSlot("TrainingSeriesResults").DataValue = trainingSeriesResults;
@@ -68,8 +94,8 @@ namespace SimpleML.Samples.Modules.UnitTests.LoggingTests
                 testLinearRegressionCostSeriesCalculator.Process();
             });
 
-            Assert.That(e.Message, NUnit.Framework.Does.StartWith("The 'm' dimension of parameter 'thetaParameters' must be 1 greater than the 'n' dimension of parameter 'trainingDataSeries'."));
-            Assert.AreEqual("thetaParameters", e.ParamName);
+            Assert.That(e.Message, NUnit.Framework.Does.StartWith("The parameter 'dataResults' must be a single column matrix (i.e. 'n' dimension equal to 1)."));
+            mockery.VerifyAllExpectationsHaveBeenMet();
         }
     }
 }

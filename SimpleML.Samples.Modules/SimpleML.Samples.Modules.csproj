@@ -39,28 +39,28 @@
     <Reference Include="ApplicationLogging.Adapters">
       <HintPath>..\packages\ApplicationLogging.1.4.0.1\lib\net40\ApplicationLogging.Adapters.dll</HintPath>
     </Reference>
-    <Reference Include="ApplicationMetrics, Version=1.4.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="ApplicationMetrics, Version=1.5.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\ApplicationMetrics.1.4.0.0\lib\net40\ApplicationMetrics.dll</HintPath>
+      <HintPath>..\packages\ApplicationMetrics.1.5.0.0\lib\net40\ApplicationMetrics.dll</HintPath>
     </Reference>
-    <Reference Include="FrameworkAbstraction, Version=1.5.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="FrameworkAbstraction, Version=1.6.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\FrameworkAbstraction.1.5.0.0\lib\net40\FrameworkAbstraction.dll</HintPath>
+      <HintPath>..\packages\FrameworkAbstraction.1.6.0.0\lib\net40\FrameworkAbstraction.dll</HintPath>
     </Reference>
     <Reference Include="log4net">
       <HintPath>..\packages\log4net.2.0.5\lib\net40-full\log4net.dll</HintPath>
     </Reference>
-    <Reference Include="MathematicsModularFramework, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="MathematicsModularFramework, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\MathematicsModularFramework.1.0.0.1\lib\net40\MathematicsModularFramework.dll</HintPath>
+      <HintPath>..\packages\MathematicsModularFramework.1.1.0.0\lib\net40\MathematicsModularFramework.dll</HintPath>
     </Reference>
-    <Reference Include="MathematicsModularFramework.Metrics, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="MathematicsModularFramework.Metrics, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\MathematicsModularFramework.1.0.0.1\lib\net40\MathematicsModularFramework.Metrics.dll</HintPath>
+      <HintPath>..\packages\MathematicsModularFramework.1.1.0.0\lib\net40\MathematicsModularFramework.Metrics.dll</HintPath>
     </Reference>
-    <Reference Include="MathematicsModularFramework.Serialization, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="MathematicsModularFramework.Serialization, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\MathematicsModularFramework.1.0.0.1\lib\net40\MathematicsModularFramework.Serialization.dll</HintPath>
+      <HintPath>..\packages\MathematicsModularFramework.1.1.0.0\lib\net40\MathematicsModularFramework.Serialization.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -79,16 +79,21 @@
     <Compile Include="FeatureRescaler.cs" />
     <Compile Include="FeatureScaler.cs" />
     <Compile Include="FeatureScalingParameterListSplitter.cs" />
+    <Compile Include="FunctionMinimizer.cs" />
     <Compile Include="IntegerDivider.cs" />
     <Compile Include="LinearRegressionCostSeriesCalculator.cs" />
     <Compile Include="LinearRegressionGradientDescentOptimizer.cs" />
     <Compile Include="LinearRegressionHypothesisCalculator.cs" />
+    <Compile Include="LogisticRegressionCostFunctionCalculator.cs" />
+    <Compile Include="MatrixColumnAdder.cs" />
     <Compile Include="MatrixColumnJoiner.cs" />
     <Compile Include="MatrixCsvReader.cs" />
     <Compile Include="MatrixOrderRandomizer.cs" />
     <Compile Include="MatrixTrainTestSplitter.cs" />
     <Compile Include="MatrixColumnSplitter.cs" />
     <Compile Include="MetricEventClasses.cs" />
+    <Compile Include="MultiParameterErrorRateCalculator.cs" />
+    <Compile Include="MultiParameterTrainer.cs" />
     <Compile Include="PolynomialFeatureGenerator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RandomIntegerGenerator.cs" />
@@ -109,9 +114,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-    <None Include="Resources\ModuleGraph.xsd">
-      <SubType>Designer</SubType>
-    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

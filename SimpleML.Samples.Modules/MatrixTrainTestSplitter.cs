@@ -55,7 +55,10 @@ namespace SimpleML.Samples.Modules
             // Check arguments/parameters
             if ((trainProportion < 1) || (trainProportion > 99))
             {
-                throw new ArgumentException("Parameter '" + trainProportionInputSlotName + "' must be between 1 and 99 (inclusive).", trainProportionInputSlotName);
+                String message = "Parameter '" + trainProportionInputSlotName + "' must be between 1 and 99 (inclusive).";
+                ArgumentException e = new ArgumentException(message, trainProportionInputSlotName);
+                logger.Log(this, LogLevel.Critical, message, e);
+                throw e;
             }
 
             // Decide how many rows of the matrix should form the train and test portions

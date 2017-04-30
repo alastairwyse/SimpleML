@@ -68,7 +68,7 @@ namespace SimpleML.Samples.Modules.UnitTests.LoggingTests
             });
 
             Assert.That(e.Message, NUnit.Framework.Does.StartWith("The number of feature scaling parameters provided (0), does not match the 'n' dimension of the inputted matrix of features (3)."));
-            Assert.AreEqual("featureScalingParameters", e.ParamName);
+            mockery.VerifyAllExpectationsHaveBeenMet();
         }
     }
 }

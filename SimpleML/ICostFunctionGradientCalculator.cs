@@ -18,16 +18,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using SimpleML.Containers;
 
-namespace SimpleML.Containers.Persistence
+namespace SimpleML
 {
-    /// <include file='InterfaceDocumentationComments.xml' path='doc/members/member[@name="T:SimpleML.Containers.Persistence.IFile"]/*'/>
-    public class File : IFile
+    /// <include file='InterfaceDocumentationComments.xml' path='doc/members/member[@name="T:SimpleML.ICostFunctionGradientCalculator"]/*'/>
+    public interface ICostFunctionGradientCalculator : ICostFunctionCalculator
     {
-        /// <include file='InterfaceDocumentationComments.xml' path='doc/members/member[@name="M:SimpleML.Containers.Persistence.IFile.ReadAllLines(System.String)"]/*'/>
-        public string[] ReadAllLines(string path)
-        {
-            return System.IO.File.ReadAllLines(path);
-        }
+        /// <include file='InterfaceDocumentationComments.xml' path='doc/members/member[@name="M:SimpleML.ICostFunctionGradientCalculator.Calculate(SimpleML.Containers.Matrix,SimpleML.Containers.Matrix,SimpleML.Containers.Matrix,System.Double)"]/*'/>
+        Tuple<Double, Matrix> Calculate(Matrix dataSeries, Matrix dataResults, Matrix thetaParameters, Double regularizationParameter);
     }
 }

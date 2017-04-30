@@ -54,11 +54,17 @@ namespace SimpleML.Samples.Modules
 
             if (rightSideItems < 1)
             {
-                throw new ArgumentException("Parameter '" + rightSideItemsInputSlotName + "' must be greater than 0.", rightSideItemsInputSlotName);
+                String message = "Parameter '" + rightSideItemsInputSlotName + "' must be greater than 0.";
+                ArgumentException e = new ArgumentException(message, rightSideItemsInputSlotName);
+                logger.Log(this, LogLevel.Critical, message, e);
+                throw e;
             }
             if (rightSideItems > (inputScalingParameters.Count - 1))
             {
-                throw new ArgumentException("Parameter '" + rightSideItemsInputSlotName + "' must be less than the size of the inputted list.", rightSideItemsInputSlotName);
+                String message = "Parameter '" + rightSideItemsInputSlotName + "' must be less than the size of the inputted list.";
+                ArgumentException e = new ArgumentException(message, rightSideItemsInputSlotName);
+                logger.Log(this, LogLevel.Critical, message, e);
+                throw e;
             }
 
             List<FeatureScalingParameters> startScalingParameters = inputScalingParameters.GetRange(0, inputScalingParameters.Count - rightSideItems);

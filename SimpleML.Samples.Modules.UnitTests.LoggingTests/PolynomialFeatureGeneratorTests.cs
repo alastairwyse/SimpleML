@@ -66,7 +66,27 @@ namespace SimpleML.Samples.Modules.UnitTests.LoggingTests
             });
 
             Assert.That(e.Message, NUnit.Framework.Does.StartWith("Parameter 'polynomialDegree' must be greater than 1."));
-            Assert.AreEqual("polynomialDegree", e.ParamName);
+            mockery.VerifyAllExpectationsHaveBeenMet();
+        }
+
+        /// <summary>
+        /// Tests the logging functionality in the ImplementProcess() method.
+        /// </summary>
+        [Test]
+        public void ImplementProcess()
+        {
+            Matrix dataSeries = new Matrix(2, 3, new Double[] { 1.0, 2.0, 3.0, 4.0, 5.0, 6.0 });
+            testPolynomialFeatureGenerator.GetInputSlot("DataSeries").DataValue = dataSeries;
+            testPolynomialFeatureGenerator.GetInputSlot("PolynomialDegree").DataValue = 2;
+
+            using (mockery.Ordered)
+            {
+                Expect.Once.On(mockApplicationLogger).Method("Log").With(testPolynomialFeatureGenerator, LogLevel.Information, "Generated polynomial features for data series, producing a matrix with 9 columns.");
+            }
+
+            testPolynomialFeatureGenerator.Process();
+
+            mockery.VerifyAllExpectationsHaveBeenMet();
         }
     }
 }

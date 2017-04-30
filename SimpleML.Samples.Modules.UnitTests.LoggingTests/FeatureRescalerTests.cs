@@ -68,7 +68,7 @@ namespace SimpleML.Samples.Modules.UnitTests.LoggingTests
             });
 
             Assert.That(e.Message, NUnit.Framework.Does.StartWith("Size of parameter 'featureScalingParameters' '0' does not match the size of the 'n' dimension of the matrix '3'."));
-            Assert.AreEqual("featureScalingParameters", e.ParamName);
+            mockery.VerifyAllExpectationsHaveBeenMet();
         }
     }
 }

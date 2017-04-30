@@ -54,11 +54,17 @@ namespace SimpleML.Samples.Modules
 
             if (rightSideColumns < 1)
             {
-                throw new ArgumentException("Parameter '" + rightSideColumnsInputSlotName + "' must be greater than 0.", rightSideColumnsInputSlotName);
+                String message = "Parameter '" + rightSideColumnsInputSlotName + "' must be greater than 0.";
+                ArgumentException e = new ArgumentException(message, rightSideColumnsInputSlotName);
+                logger.Log(this, LogLevel.Critical, message, e);
+                throw e;
             }
             if (rightSideColumns > (inputMatrix.NDimension - 1))
             {
-                throw new ArgumentException("Parameter '" + rightSideColumnsInputSlotName + "' must be less than the 'n' dimension of the input matrix.", rightSideColumnsInputSlotName);
+                String message = "Parameter '" + rightSideColumnsInputSlotName + "' must be less than the 'n' dimension of the input matrix.";
+                ArgumentException e = new ArgumentException(message, rightSideColumnsInputSlotName);
+                logger.Log(this, LogLevel.Critical, message, e);
+                throw e;
             }
 
             Matrix leftColumnsMatrix = inputMatrix.GetColumnSubset(1, inputMatrix.NDimension - rightSideColumns);

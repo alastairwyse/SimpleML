@@ -113,5 +113,42 @@ namespace SimpleML
 
             return returnMatrix;
         }
+
+        /// <summary>
+        /// Makes a copy of the inputted matrix.
+        /// </summary>
+        /// <param name="inputMatrix">The matrix to copy.</param>
+        /// <returns>The copy of the matrix.</returns>
+        public Matrix Copy(Matrix inputMatrix)
+        {
+            Matrix returnMatrix = new Matrix(inputMatrix.MDimension, inputMatrix.NDimension);
+
+            for (int i = 1; i <= inputMatrix.NDimension; i++)
+            {
+                for (int j = 1; j <= inputMatrix.MDimension; j++)
+                {
+                    returnMatrix.SetElement(j, i, inputMatrix.GetElement(j, i));
+                }
+            }
+
+            return returnMatrix;
+        }
+
+        /// <summary>
+        /// Writes the contents of the inputted matrix to the console.
+        /// </summary>
+        /// <param name="inputMatrix">The matrix to write to the console.</param>
+        /// <remarks>The method could be made more generic (e.g. write to a stream), but found myself writing and copying this many times for test code, so thought it better to put in here.  ** NOTE ** this method may be removed from this class at some point, so do not create permanent dependencies on it.</remarks>
+        public void WriteToConsole(Matrix inputMatrix)
+        {
+            for (Int32 i = 1; i <= inputMatrix.MDimension; i++)
+            {
+                for (Int32 j = 1; j <= inputMatrix.NDimension; j++)
+                {
+                    Console.Write(inputMatrix.GetElement(i, j) + " ");
+                }
+                Console.WriteLine();
+            }
+        }
     }
 }

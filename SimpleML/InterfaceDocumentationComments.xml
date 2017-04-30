@@ -17,5 +17,34 @@
       <param name="thetaParameters">The parameter values of the hypothesis, stored column-wise in a matrix.</param>
       <returns>A matrix containing a single column containing the hypothesis evaluation for each item in the data series (the 'm' dimension of the resulting matrix should match the 'm' dimension of the 'dataSeries' parameter).</returns>
     </member>
+    <member name="T:SimpleML.ICostFunctionCalculator">
+      <summary>
+        Defines methods to calculate the basic cost of a function given specific input data and theta parameters.
+      </summary>
+    </member>
+    <member name="M:SimpleML.ICostFunctionCalculator.Calculate(SimpleML.Containers.Matrix,SimpleML.Containers.Matrix,SimpleML.Containers.Matrix)">
+      <summary>
+        Calculates the cost using the specified data series and theta parameters.
+      </summary>
+      <param name="dataSeries">The data series, stored column-wise in a matrix.</param>
+      <param name="dataResults">The data results, stored as a single column matrix.</param>
+      <param name="thetaParameters">The theta parameter values to use in the cost calculation, stored as a single column matrix.</param>
+      <returns>The cost.</returns>
+    </member>
+    <member name="T:SimpleML.ICostFunctionGradientCalculator">
+      <summary>
+        Defines methods to calculate the cost and gradients of a function given specific input data, theta parameters, and a regularization parameter.
+      </summary>
+    </member>
+    <member name="M:SimpleML.ICostFunctionGradientCalculator.Calculate(SimpleML.Containers.Matrix,SimpleML.Containers.Matrix,SimpleML.Containers.Matrix,System.Double)">
+      <summary>
+        Calculates the cost and gradients, using the specified data series, theta parameters, and regularization parameter.
+      </summary>
+      <param name="dataSeries">The data series, stored column-wise in a matrix.</param>
+      <param name="dataResults">The data results, stored as a single column matrix.</param>
+      <param name="thetaParameters">The theta parameter values to use in the cost calculation, stored as a single column matrix.</param>
+      <param name="regularizationParameter">The regularization parameter (lambda).</param>
+      <returns>A tuple containing the cost as a Double, and a Matrix containing the gradients for each theta parameter (stored column-wise).</returns>
+    </member>
   </members>
 </doc>

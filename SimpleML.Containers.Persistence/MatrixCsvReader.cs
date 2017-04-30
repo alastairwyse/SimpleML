@@ -19,6 +19,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using SimpleML.Containers;
+using FrameworkAbstraction;
 
 namespace SimpleML.Containers.Persistence
 {
@@ -27,7 +28,7 @@ namespace SimpleML.Containers.Persistence
     /// </summary>
     public class MatrixCsvReader
     {
-        IFile file;
+        private IFile file;
 
         /// <summary>
         /// Initialises a new instance of the SimpleML.Containers.Persistence.MatrixCsvReader class.

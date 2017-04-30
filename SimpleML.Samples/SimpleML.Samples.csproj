@@ -44,29 +44,29 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\ApplicationLogging.1.4.0.1\lib\net40\ApplicationLogging.Adapters.dll</HintPath>
     </Reference>
-    <Reference Include="ApplicationMetrics, Version=1.4.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="ApplicationMetrics, Version=1.5.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\ApplicationMetrics.1.4.0.0\lib\net40\ApplicationMetrics.dll</HintPath>
+      <HintPath>..\packages\ApplicationMetrics.1.5.0.0\lib\net40\ApplicationMetrics.dll</HintPath>
     </Reference>
-    <Reference Include="FrameworkAbstraction, Version=1.5.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="FrameworkAbstraction, Version=1.6.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\FrameworkAbstraction.1.5.0.0\lib\net40\FrameworkAbstraction.dll</HintPath>
+      <HintPath>..\packages\FrameworkAbstraction.1.6.0.0\lib\net40\FrameworkAbstraction.dll</HintPath>
     </Reference>
     <Reference Include="log4net, Version=1.2.15.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\log4net.2.0.5\lib\net40-full\log4net.dll</HintPath>
     </Reference>
-    <Reference Include="MathematicsModularFramework, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="MathematicsModularFramework, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\MathematicsModularFramework.1.0.0.1\lib\net40\MathematicsModularFramework.dll</HintPath>
+      <HintPath>..\packages\MathematicsModularFramework.1.1.0.0\lib\net40\MathematicsModularFramework.dll</HintPath>
     </Reference>
-    <Reference Include="MathematicsModularFramework.Metrics, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="MathematicsModularFramework.Metrics, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\MathematicsModularFramework.1.0.0.1\lib\net40\MathematicsModularFramework.Metrics.dll</HintPath>
+      <HintPath>..\packages\MathematicsModularFramework.1.1.0.0\lib\net40\MathematicsModularFramework.Metrics.dll</HintPath>
     </Reference>
-    <Reference Include="MathematicsModularFramework.Serialization, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="MathematicsModularFramework.Serialization, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\MathematicsModularFramework.1.0.0.1\lib\net40\MathematicsModularFramework.Serialization.dll</HintPath>
+      <HintPath>..\packages\MathematicsModularFramework.1.1.0.0\lib\net40\MathematicsModularFramework.Serialization.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -84,6 +84,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\SimpleML.Containers.Persistence\SimpleML.Containers.Persistence.csproj">
+      <Project>{117f30fc-2763-4184-bcf9-c65a45353559}</Project>
+      <Name>SimpleML.Containers.Persistence</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SimpleML.Containers.Serialization\SimpleML.Containers.Serialization.csproj">
       <Project>{4c8c91b7-3afd-4dc6-ac62-a16444bde03c}</Project>
       <Name>SimpleML.Containers.Serialization</Name>
@@ -103,11 +107,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <None Include="Resources\LogisticRegressionData.csv" />
     <None Include="Resources\MarketData.csv" />
-    <None Include="Resources\ModuleGraph.xsd">
-      <SubType>Designer</SubType>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\Basic Linear Regression.xml" />
@@ -115,6 +116,7 @@
     <Content Include="Resources\Linear Regression with Polynomial Features.xml" />
     <Content Include="Resources\Linear Regression with Feature Scaling and Test Data Cost.xml" />
     <Content Include="Resources\Linear Regression with Feature Scaling.xml" />
+    <Content Include="Resources\Logistic Regression Regularization Comparison.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

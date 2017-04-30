@@ -18,15 +18,20 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using NMock2;
+using ApplicationMetrics;
 
-namespace SimpleML.Containers.Persistence
+namespace SimpleML.Samples.Modules.UnitTests.MetricsTests
 {
-    /// <include file='InterfaceDocumentationComments.xml' path='doc/members/member[@name="T:SimpleML.Containers.Persistence.IFile"]/*'/>
-    public interface IFile
+    /// <summary>
+    /// Used to allow different metric objects of the same type to be regarded as equal, when calling the Expect With() method.
+    /// </summary>
+    /// <remarks>See http://nmock.sourceforge.net/advanced.html for reference.</remarks>
+    class IsMetric
     {
-        // TODO: Consider merging into FrameworkAbstraction solution
-
-        /// <include file='InterfaceDocumentationComments.xml' path='doc/members/member[@name="M:SimpleML.Containers.Persistence.IFile.ReadAllLines(System.String)"]/*'/>
-        String[] ReadAllLines(String path);
+        public static Matcher Equal(MetricBase otherMetric)
+        {
+            return new MetricMatcher(otherMetric);
+        }
     }
 }

@@ -1,0 +1,111 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{47DB92F6-CC14-4D13-AE55-7539864FEEC8}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SimpleML.UnitTests.MetricsTests</RootNamespace>
+    <AssemblyName>SimpleML.UnitTests.MetricsTests</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="ApplicationLogging">
+      <HintPath>..\packages\ApplicationLogging.1.4.0.1\lib\net40\ApplicationLogging.dll</HintPath>
+    </Reference>
+    <Reference Include="ApplicationLogging.Adapters">
+      <HintPath>..\packages\ApplicationLogging.1.4.0.1\lib\net40\ApplicationLogging.Adapters.dll</HintPath>
+    </Reference>
+    <Reference Include="ApplicationMetrics, Version=1.5.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\ApplicationMetrics.1.5.0.0\lib\net40\ApplicationMetrics.dll</HintPath>
+    </Reference>
+    <Reference Include="FrameworkAbstraction, Version=1.6.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\FrameworkAbstraction.1.6.0.0\lib\net40\FrameworkAbstraction.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net">
+      <HintPath>..\packages\log4net.2.0.5\lib\net40-full\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="NMock2, Version=2.0.0.44, Culture=neutral, PublicKeyToken=37d3be0adc87c2b7, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Referenced Libraries\NMock2.dll</HintPath>
+    </Reference>
+    <Reference Include="nunit.framework, Version=3.5.0.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\NUnit.3.5.0\lib\net40\nunit.framework.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AmountMetricMatcher.cs" />
+    <Compile Include="FunctionMinimizerTests.cs" />
+    <Compile Include="GradientDescentOptimizerTests.cs" />
+    <Compile Include="IsMetric.cs" />
+    <Compile Include="MetricMatcher.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SimpleML.Containers.Persistence\SimpleML.Containers.Persistence.csproj">
+      <Project>{117f30fc-2763-4184-bcf9-c65a45353559}</Project>
+      <Name>SimpleML.Containers.Persistence</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SimpleML.Containers\SimpleML.Containers.csproj">
+      <Project>{a497cdef-435c-43b9-a07a-4967c12dcdd2}</Project>
+      <Name>SimpleML.Containers</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SimpleML.Metrics\SimpleML.Metrics.csproj">
+      <Project>{d43a2b83-83da-4ee3-90b7-88916025bcc1}</Project>
+      <Name>SimpleML.Metrics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SimpleML.UnitTests\SimpleML.UnitTests.csproj">
+      <Project>{719714f6-b7a3-4bd7-8217-17f05a5bb187}</Project>
+      <Name>SimpleML.UnitTests</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SimpleML\SimpleML.csproj">
+      <Project>{c18ec2a4-7e3c-4fdc-884f-017a27bbd8e9}</Project>
+      <Name>SimpleML</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+    <None Include="Resources\FunctionMinimizer Test Data.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

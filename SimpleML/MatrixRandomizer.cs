@@ -27,8 +27,6 @@ namespace SimpleML
     /// </summary>
     public class MatrixRandomizer
     {
-        // TODO: Possibly need to create unit tests for this class
-
         /// <summary>
         /// Randomly reorders the rows in the specified Matrix, returning the reordered rows in a new Matrix.
         /// </summary>

@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.IO;
 using NUnit.Framework;
 using NMock2;
 using NMock2.Matchers;
@@ -69,7 +70,30 @@ namespace SimpleML.Samples.Modules.UnitTests.LoggingTests
             });
 
             Assert.That(e.Message, NUnit.Framework.Does.StartWith("Parameter 'startColumn' must be greater than or equal to 1."));
-            Assert.AreEqual("startColumn", e.ParamName);
+            mockery.VerifyAllExpectationsHaveBeenMet();
+        }
+
+        /// <summary>
+        /// Tests the logging functionality in the ImplementProcess() method.
+        /// </summary>
+        [Test]
+        public void ImplementProcess()
+        {
+            // TODO: Remove dependency on external file.  Will need to somehow be able to inject mock IFile through the module into the underlying CSV reader.
+
+            String testFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Resources\FunctionMinimizer Test Data.csv");
+            testMatrixCsvReader.GetInputSlot("CsvFilePath").DataValue = testFilePath;
+            testMatrixCsvReader.GetInputSlot("CsvStartingColumn").DataValue = 1;
+            testMatrixCsvReader.GetInputSlot("CsvNumberOfColumns").DataValue = 2;
+
+            using (mockery.Ordered)
+            {
+                Expect.Once.On(mockApplicationLogger).Method("Log").With(testMatrixCsvReader, LogLevel.Information, "Read CSV data from file at path \"" + testFilePath + "\" into a matrix.");
+            }
+
+            testMatrixCsvReader.Process();
+
+            mockery.VerifyAllExpectationsHaveBeenMet();
         }
     }
 }

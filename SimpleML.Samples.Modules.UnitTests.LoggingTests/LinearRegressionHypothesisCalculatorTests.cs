@@ -46,6 +46,30 @@ namespace SimpleML.Samples.Modules.UnitTests.LoggingTests
         }
 
         /// <summary>
+        /// Tests the logging functionality when the ImplementProcess() method is called with dimension mismatch between parameters 'DataSeries' and 'ThetaParameters'.
+        /// </summary>
+        [Test]
+        public void ImplementProcess_DataSeriesAndThetaParametersDimensionMismatch()
+        {
+            Matrix dataSeries = new Matrix(2, 2, new Double[] { -1.1, 0.5, 2.3, -0.2 });
+            Matrix thetaParameters = new Matrix(2, 1, new Double[] { 4.3, 0.6 });
+            testLinearRegressionHypothesisCalculator.GetInputSlot("DataSeries").DataValue = dataSeries;
+            testLinearRegressionHypothesisCalculator.GetInputSlot("ThetaParameters").DataValue = thetaParameters;
+
+            using (mockery.Ordered)
+            {
+                Expect.Once.On(mockApplicationLogger).Method("Log").With(testLinearRegressionHypothesisCalculator, LogLevel.Critical, "The 'm' dimension of parameter 'ThetaParameters' must be 1 greater than the 'n' dimension of parameter 'DataSeries'.", new TypeMatcher(typeof(ArgumentException)));
+            }
+
+            ArgumentException e = Assert.Throws<ArgumentException>(delegate
+            {
+                testLinearRegressionHypothesisCalculator.Process();
+            });
+
+            mockery.VerifyAllExpectationsHaveBeenMet();
+        }
+
+        /// <summary>
         /// Tests the logging functionality when an exception occurs in the ImplementProcess() method.
         /// </summary>
         [Test]
@@ -69,6 +93,28 @@ namespace SimpleML.Samples.Modules.UnitTests.LoggingTests
 
             Assert.That(e.Message, NUnit.Framework.Does.StartWith("The parameter 'thetaParameters' must be a single column matrix (i.e. 'n' dimension equal to 1)."));
             Assert.AreEqual("thetaParameters", e.ParamName);
+            mockery.VerifyAllExpectationsHaveBeenMet();
+        }
+
+        /// <summary>
+        /// Tests the logging functionality in the ImplementProcess() method.
+        /// </summary>
+        [Test]
+        public void ImplementProcess()
+        {
+            Matrix dataSeries = new Matrix(2, 2, new Double[] { -1.1, 0.5, 2.3, -0.2 });
+            Matrix thetaParameters = new Matrix(3, 1, new Double[] { 1.1, 4.3, 0.6 });
+            testLinearRegressionHypothesisCalculator.GetInputSlot("DataSeries").DataValue = dataSeries;
+            testLinearRegressionHypothesisCalculator.GetInputSlot("ThetaParameters").DataValue = thetaParameters;
+
+            using (mockery.Ordered)
+            {
+                Expect.Once.On(mockApplicationLogger).Method("Log").With(testLinearRegressionHypothesisCalculator, LogLevel.Information, "Applied multi-variate linear regression hypothesis to matrix data series of 2 items.");
+            }
+
+            testLinearRegressionHypothesisCalculator.Process();
+
+            mockery.VerifyAllExpectationsHaveBeenMet();
         }
     }
 }

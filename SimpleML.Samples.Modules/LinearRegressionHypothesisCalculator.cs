@@ -40,7 +40,7 @@ namespace SimpleML.Samples.Modules
         public LinearRegressionHypothesisCalculator()
             : base()
         {
-            Description = "Adds a bias term to a series of data, and then applies a multi-variate linear regression hypothesis (effectively predicts the result of linear regression hypothesis for a series of data points)";
+            Description = "Adds a bias term to the data series, and then applies a multi-variate linear regression hypothesis (effectively predicts the result of linear regression hypothesis for a series of data points)";
             AddInputSlot(dataSeriesInputSlotName, "The data series to apply the hypothesis to, stored column-wise in a matrix", typeof(Matrix));
             AddInputSlot(thetaParametersInputSlotName, "The parameter values of the hypothesis, stored column-wise in a matrix", typeof(Matrix));
             AddOutputSlot(resultsOutputSlotName, "The result values, stored column-wise in a matrix", typeof(Matrix));
@@ -53,7 +53,10 @@ namespace SimpleML.Samples.Modules
 
             if (dataSeries.NDimension != (thetaParameters.MDimension - 1))
             {
-                throw new ArgumentException("The 'm' dimension of parameter '" + thetaParametersInputSlotName + "' must be 1 greater than the 'n' dimension of parameter '" + dataSeriesInputSlotName + "'.", thetaParametersInputSlotName);
+                String message = "The 'm' dimension of parameter '" + thetaParametersInputSlotName + "' must be 1 greater than the 'n' dimension of parameter '" + dataSeriesInputSlotName + "'.";
+                ArgumentException e = new ArgumentException(message, thetaParametersInputSlotName);
+                logger.Log(this, LogLevel.Critical, message, e);
+                throw e;
             }
 
             try

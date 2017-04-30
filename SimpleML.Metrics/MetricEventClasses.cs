@@ -27,7 +27,7 @@ namespace SimpleML.Metrics
         public GradientDescentOptimizationCompleted()
         {
             base.name = "GradientDescentOptimizationCompleted";
-            base.description = "The number gradient descent optimizations completed";
+            base.description = "The number of gradient descent optimizations completed";
         }
     }
 
@@ -47,6 +47,34 @@ namespace SimpleML.Metrics
         {
             base.name = "GradientDescentOptimizationTime";
             base.description = "The time taken to perform gradient descent optimization";
+        }
+    }
+
+    public class FunctionMinimizationCompleted : CountMetric
+    {
+        public FunctionMinimizationCompleted()
+        {
+            base.name = "FunctionMinimizationCompleted";
+            base.description = "The number of function minimizations completed";
+        }
+    }
+
+    public class FunctionMinimizationIterations : AmountMetric
+    {
+        public FunctionMinimizationIterations(long iterations)
+        {
+            base.name = "FunctionMinimizationIterations";
+            base.description = "The number of iterations of function minimization";
+            base.amount = iterations;
+        }
+    }
+
+    public class FunctionMinimizationTime : IntervalMetric
+    {
+        public FunctionMinimizationTime()
+        {
+            base.name = "FunctionMinimizationTime";
+            base.description = "The time taken to perform function minimization";
         }
     }
 }

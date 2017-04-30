@@ -43,7 +43,7 @@ namespace SimpleML.Samples.Modules
         public LinearRegressionGradientDescentOptimizer()
             : base()
         {
-            Description = "Runs gradient descent optimization for linear regression";
+            Description = "Adds a bias term to the data series, and then runs gradient descent optimization for linear regression";
             AddInputSlot(initialThetaParametersInputSlotName, "The initial theta parameter values to use in the optimization, stored column-wise in a matrix", typeof(Matrix));
             AddInputSlot(trainingSeriesDataInputSlotName, "The training data series, stored column-wise in a matrix", typeof(Matrix));
             AddInputSlot(trainingSeriesResultsInputSlotName, "The training data results, stored as a single column matrix", typeof(Matrix));
@@ -60,12 +60,28 @@ namespace SimpleML.Samples.Modules
             Double learningRate = (Double)GetInputSlot(learningRateInputSlotName).DataValue;
             Int32 maxIterations = (Int32)GetInputSlot(maxIterationsInputSlotName).DataValue;
 
+            if (trainingSeriesData.NDimension != (initialThetaParameters.MDimension - 1))
+            {
+                String message = "The 'm' dimension of parameter '" + initialThetaParametersInputSlotName + "' must be 1 greater than the 'n' dimension of parameter '" + trainingSeriesDataInputSlotName + "'.";
+                ArgumentException e = new ArgumentException(message, initialThetaParametersInputSlotName);
+                logger.Log(this, LogLevel.Critical, message, e);
+                throw e;
+            }
+              
             try
             {
-                GradientDescentOptimizer gradientDescentOptimizer = new GradientDescentOptimizer(logger, metricLogger);
+                MatrixUtilities matrixUtilities = new MatrixUtilities();
+                // Add a column of 1's to the training data
+                Matrix biasedTrainingDataSeries = matrixUtilities.AddColumns(trainingSeriesData, 1, true, 1);
+                GradientDescentOptimizer gradientDescentOptimizer = new GradientDescentOptimizer(logger, metricLogger, cancellationToken);
                 MultivariateLinearRegressionHypothesisCalculator hypothesisCalculator = new MultivariateLinearRegressionHypothesisCalculator();
-                Matrix optimizedThetaParameters = gradientDescentOptimizer.Optimize(initialThetaParameters, trainingSeriesData, trainingSeriesResults, hypothesisCalculator, learningRate, maxIterations);
+                MultivariateLinearRegressionCostFunctionCalculator costFunctionCalculator = new MultivariateLinearRegressionCostFunctionCalculator();
+                Matrix optimizedThetaParameters = gradientDescentOptimizer.Optimize(initialThetaParameters, biasedTrainingDataSeries, trainingSeriesResults, hypothesisCalculator, costFunctionCalculator, learningRate, maxIterations);
                 GetOutputSlot(optimizedThetaParametersOutputSlotName).DataValue = optimizedThetaParameters;
+            }
+            catch (OperationCanceledException)
+            {
+                throw;
             }
             catch (Exception e)
             {
