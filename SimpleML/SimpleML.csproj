@@ -62,6 +62,7 @@
     <Compile Include="..\SolutionInfo.cs">
       <Link>SolutionInfo.cs</Link>
     </Compile>
+    <Compile Include="BasicFeedForwardNeuralNetwork.cs" />
     <Compile Include="FeatureScaler.cs" />
     <Compile Include="FeatureScalingParameters.cs" />
     <Compile Include="FunctionMinimizer.cs" />

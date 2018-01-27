@@ -50,6 +50,7 @@
     <Compile Include="..\SolutionInfo.cs">
       <Link>SolutionInfo.cs</Link>
     </Compile>
+    <Compile Include="BasicFeedForwardNeuralNetworkTests.cs" />
     <Compile Include="FeatureScalerTests.cs" />
     <Compile Include="FunctionMinimizerTests.cs" />
     <Compile Include="GradientDescentOptimizerTests.cs" />
