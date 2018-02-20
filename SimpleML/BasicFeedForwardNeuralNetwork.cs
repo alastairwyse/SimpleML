@@ -219,124 +219,130 @@ namespace SimpleML
 
             costHistory.Clear();
             Int32 numberOfTrainingCases = trainingData.GetLength(0);
+            Int32 currentTrainingCaseIndex = 0;
+            Int32 completedEpochCount = 0;
+            Int32 completedBatchCount = 0;
 
             // Iterate through the training set for the specified number of epochs
-            for (Int32 i = 1; i <= numberOfEpochs; i++)
+            while (completedEpochCount < numberOfEpochs)
             {
-                Int32 currentBatchFirstTrainingExampleIndex = 0;
-                Int32 currentBatchLastTrainingExampleIndex = 0;
+                Int32 completedTrainingCasesInCurrentBatchCount = 0;
+                Double currentBatchCost = 0.0;
 
-                // Iterate for each batch of the current epoch
-                while (currentBatchFirstTrainingExampleIndex < numberOfTrainingCases)
+                // Create arrays to hold the gradients for each of the weights
+                Double[,] inputToHiddenLayerGradients = new Double[numberOfHiddenUnits, numberOfInputUnits];
+                Double[,] hiddenToOutputLayerGradients = new Double[numberOfOutputUnits, numberOfHiddenUnits];
+
+                // Iterate through one batch
+                while ((completedEpochCount < numberOfEpochs) && (completedTrainingCasesInCurrentBatchCount < batchSize))
                 {
-                    currentBatchLastTrainingExampleIndex = Math.Min(currentBatchFirstTrainingExampleIndex + batchSize - 1, numberOfTrainingCases - 1);
-                    Int32 currentBatchSize = currentBatchLastTrainingExampleIndex - currentBatchFirstTrainingExampleIndex + 1;
-                    Double currentBatchCost = 0.0;
+                    // Take the current training and result cases into separate variables
+                    Double[] currentTrainingCase = GetArraySlice(currentTrainingCaseIndex, trainingData);
+                    Double[] currentTarget = GetArraySlice(currentTrainingCaseIndex, targetValues);
 
-                    // Create arrays to hold the gradients for each of the weights
-                    Double[,] inputToHiddenLayerGradients = new Double[numberOfHiddenUnits, numberOfInputUnits];
-                    Double[,] hiddenToOutputLayerGradients = new Double[numberOfOutputUnits, numberOfHiddenUnits];
-
-                    // Iterate through the current batch
-                    for (Int32 j = currentBatchFirstTrainingExampleIndex; j <= currentBatchLastTrainingExampleIndex; j++)
+                    // -------------------
+                    // Do the forward pass
+                    // -------------------
+                    // Calculate the activation values for the hidden layer
+                    for (Int32 k = 0; k < numberOfHiddenUnits; k++)
                     {
-                        // Take the current training and result examples into separate variables
-                        Double[] currentTrainingExample = GetArraySlice(j, trainingData);
-                        Double[] currentTarget = GetArraySlice(j, targetValues);
+                        Double currentHiddenUnitLogitValue = 0.0;
 
-                        // -------------------
-                        // Do the forward pass
-                        // -------------------
-                        // Calculate the activation values for the hidden layer
-                        for (Int32 k = 0; k < numberOfHiddenUnits; k++)
+                        // Sum up the products of the input unit and the corresponding weight which feeds into the current hidden unit
+                        for (Int32 m = 0; m < numberOfInputUnits; m++)
                         {
-                            Double currentHiddenUnitLogitValue = 0.0;
-
-                            // Sum up the products of the input unit and the corresponding weight which feeds into the current hidden unit
-                            for (Int32 m = 0; m < numberOfInputUnits; m++)
-                            {
-                                currentHiddenUnitLogitValue += currentTrainingExample[m] * inputToHiddenLayerWeights[k, m];
-                            }
-                            // Apply the activation function, and store the value
-                            hiddenLayerActivationValues[k] = ApplySigmoidFunction(currentHiddenUnitLogitValue);
+                            currentHiddenUnitLogitValue += currentTrainingCase[m] * inputToHiddenLayerWeights[k, m];
                         }
+                        // Apply the activation function, and store the value
+                        hiddenLayerActivationValues[k] = ApplySigmoidFunction(currentHiddenUnitLogitValue);
+                    }
 
-                        // Calculate the activation value for the output layer
-                        for (Int32 k = 0; k < numberOfOutputUnits; k++)
+                    // Calculate the activation value for the output layer
+                    for (Int32 k = 0; k < numberOfOutputUnits; k++)
+                    {
+                        Double currentOutputUnitLogitValue = 0.0;
+
+                        for (Int32 m = 0; m < numberOfHiddenUnits; m++)
                         {
-                            Double currentOutputUnitLogitValue = 0.0;
-
-                            for (Int32 m = 0; m < numberOfHiddenUnits; m++)
-                            {
-                                currentOutputUnitLogitValue += hiddenLayerActivationValues[m] * hiddenToOutputLayerWeights[k, m];
-                            }
-                            outputLayerActivationValues[k] = ApplySigmoidFunction(currentOutputUnitLogitValue);
+                            currentOutputUnitLogitValue += hiddenLayerActivationValues[m] * hiddenToOutputLayerWeights[k, m];
                         }
+                        outputLayerActivationValues[k] = ApplySigmoidFunction(currentOutputUnitLogitValue);
+                    }
 
-                        // Calculate the cost for this training example
-                        Double currentCost = CalculateCost(currentTarget, outputLayerActivationValues);
-                        currentBatchCost += currentCost;
+                    // Calculate the cost for this training case
+                    Double currentCost = CalculateCost(currentTarget, outputLayerActivationValues);
+                    currentBatchCost += currentCost;
 
-                        // --------------------
-                        // Do the backward pass
-                        // --------------------
+                    // --------------------
+                    // Do the backward pass
+                    // --------------------
 
-                        // Calculate the hidden to output layer gradients
-                        for (Int32 k = 0; k < numberOfOutputUnits; k++)
+                    // Calculate the hidden to output layer gradients
+                    for (Int32 k = 0; k < numberOfOutputUnits; k++)
+                    {
+                        for (Int32 m = 0; m < numberOfHiddenUnits; m++)
                         {
-                            for (Int32 m = 0; m < numberOfHiddenUnits; m++)
-                            {
-                                hiddenToOutputLayerGradients[k, m] += (outputLayerActivationValues[k] - currentTarget[k]) * hiddenLayerActivationValues[m];
-                            }
-                        }
-
-                        // Calculate the input to hidden layer gradients
-                        for (Int32 k = 0; k < numberOfHiddenUnits; k++)
-                        {
-                            for (Int32 m = 0; m < numberOfInputUnits; m++)
-                            {
-                                Double currentHiddenToOutputLayerGradient = 0.0;
-
-                                for (Int32 n = 0; n < numberOfOutputUnits; n++)
-                                {
-                                    currentHiddenToOutputLayerGradient += ((outputLayerActivationValues[n] - currentTarget[n]) * hiddenToOutputLayerWeights[n, k] * (hiddenLayerActivationValues[k] * (1 - hiddenLayerActivationValues[k])) * currentTrainingExample[m]);
-                                }
-
-                                inputToHiddenLayerGradients[k, m] += currentHiddenToOutputLayerGradient;
-                            }
+                            hiddenToOutputLayerGradients[k, m] += (outputLayerActivationValues[k] - currentTarget[k]) * hiddenLayerActivationValues[m];
                         }
                     }
 
-                    // Average the cost by the number of training examples in the current batch
-                    cost = currentBatchCost / Convert.ToDouble(currentBatchSize);
-                    if (keepCostHistory == true)
+                    // Calculate the input to hidden layer gradients
+                    for (Int32 k = 0; k < numberOfHiddenUnits; k++)
                     {
-                        costHistory.Add(new CostHistoryItem(i, cost));
-                    }
-
-                    // Average the gradients by the number of training examples in the current batch
-                    DivideArrayElements(inputToHiddenLayerGradients, Convert.ToDouble(currentBatchSize));
-                    DivideArrayElements(hiddenToOutputLayerGradients, Convert.ToDouble(currentBatchSize));
-
-                    // Update the input to hidden layer weights
-                    for (Int32 j = 0; j < inputToHiddenLayerWeights.GetLength(0); j++)
-                    {
-                        for (Int32 k = 0; k < inputToHiddenLayerWeights.GetLength(1); k++)
+                        for (Int32 m = 0; m < numberOfInputUnits; m++)
                         {
-                            inputToHiddenLayerWeights[j, k] -= inputToHiddenLayerGradients[j, k] * learningRate;
+                            Double currentHiddenToOutputLayerGradient = 0.0;
+
+                            for (Int32 n = 0; n < numberOfOutputUnits; n++)
+                            {
+                                currentHiddenToOutputLayerGradient += ((outputLayerActivationValues[n] - currentTarget[n]) * hiddenToOutputLayerWeights[n, k] * (hiddenLayerActivationValues[k] * (1 - hiddenLayerActivationValues[k])) * currentTrainingCase[m]);
+                            }
+
+                            inputToHiddenLayerGradients[k, m] += currentHiddenToOutputLayerGradient;
                         }
                     }
 
-                    // Update the hidden to output layer weights
-                    for (Int32 j = 0; j < hiddenToOutputLayerWeights.GetLength(0); j++)
+                    completedTrainingCasesInCurrentBatchCount++;
+                    if (currentTrainingCaseIndex == (numberOfTrainingCases - 1))
                     {
-                        for (Int32 k = 0; k < hiddenToOutputLayerWeights.GetLength(1); k++)
-                        {
-                            hiddenToOutputLayerWeights[j, k] -= hiddenToOutputLayerGradients[j, k] * learningRate;
-                        }
+                        currentTrainingCaseIndex = 0;
+                        completedEpochCount++;
                     }
+                    else
+                    {
+                        currentTrainingCaseIndex++;
+                    }
+                }
 
-                    currentBatchFirstTrainingExampleIndex = currentBatchFirstTrainingExampleIndex + batchSize;
+                completedBatchCount++;
+
+                // Average the cost by the number of training cases in the current batch
+                cost = currentBatchCost / Convert.ToDouble(completedTrainingCasesInCurrentBatchCount);
+                if (keepCostHistory == true)
+                {
+                    costHistory.Add(new CostHistoryItem(completedBatchCount, cost));
+                }
+
+                // Average the gradients by the number of training cases in the current batch
+                DivideArrayElements(inputToHiddenLayerGradients, Convert.ToDouble(completedTrainingCasesInCurrentBatchCount));
+                DivideArrayElements(hiddenToOutputLayerGradients, Convert.ToDouble(completedTrainingCasesInCurrentBatchCount));
+
+                // Update the input to hidden layer weights
+                for (Int32 j = 0; j < inputToHiddenLayerWeights.GetLength(0); j++)
+                {
+                    for (Int32 k = 0; k < inputToHiddenLayerWeights.GetLength(1); k++)
+                    {
+                        inputToHiddenLayerWeights[j, k] -= inputToHiddenLayerGradients[j, k] * learningRate;
+                    }
+                }
+
+                // Update the hidden to output layer weights
+                for (Int32 j = 0; j < hiddenToOutputLayerWeights.GetLength(0); j++)
+                {
+                    for (Int32 k = 0; k < hiddenToOutputLayerWeights.GetLength(1); k++)
+                    {
+                        hiddenToOutputLayerWeights[j, k] -= hiddenToOutputLayerGradients[j, k] * learningRate;
+                    }
                 }
             }
         }
@@ -395,7 +401,7 @@ namespace SimpleML
         /// <summary>
         /// Retrieves a 'slice' from the first dimension of a 2 dimensional array.
         /// </summary>
-        /// <remarks>Used to retrieve a single training or target example from a set of examples.</remarks>
+        /// <remarks>Used to retrieve a single training or target case from a set of cases.</remarks>
         /// <param name="index">The index of the first dimension of the array to retrieve.</param>
         /// <param name="inputArray">The array to retrive the slice from.</param>
         /// <returns>The array slice.</returns>

@@ -31,7 +31,7 @@ namespace SimpleML
         private IMetricLogger metricLogger;
 
         /// <summary>
-        /// Initialises a new instance of the MathematicsModularFramework.MetricsUtilities class.
+        /// Initialises a new instance of the SimpleML.MetricsUtilities class.
         /// </summary>
         /// <param name="metricLogger">The metric logger to write metric events to.</param>
         public MetricsUtilities(IMetricLogger metricLogger)

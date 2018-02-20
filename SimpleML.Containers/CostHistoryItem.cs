@@ -22,28 +22,28 @@ using System.Text;
 namespace SimpleML.Containers
 {
     /// <summary>
-    /// Container class containing the cost of a neural network at a specified training epoch.
+    /// Container class containing the cost of a neural network at a specified training batch.
     /// </summary>
     public class CostHistoryItem
     {
-        /// <summary>The epoch of training.</summary>
-        private Int32 epoch;
-        /// <summary>The cost at the specified epoch.</summary>
+        /// <summary>The batch of training.</summary>
+        private Int32 batch;
+        /// <summary>The cost at the end of the specified batch.</summary>
         private Double cost;
 
         /// <summary>
-        /// The epoch of training.
+        /// The batch of training.
         /// </summary>
-        public Int32 Epoch
+        public Int32 Batch
         {
             get
             {
-                return epoch;
+                return batch;
             }
         }
 
         /// <summary>
-        /// The cost at the specified epoch.
+        /// The cost at the end of the specified batch.
         /// </summary>
         public Double Cost
         {
@@ -56,16 +56,16 @@ namespace SimpleML.Containers
         /// <summary>
         /// Initialises a new instance of the SimpleML.Containers.CostHistoryItem class.
         /// </summary>
-        /// <param name="epoch">The epoch of training.</param>
-        /// <param name="cost">The cost at the specified epoch.</param>
-        public CostHistoryItem(Int32 epoch, Double cost)
+        /// <param name="batch">The batch of training.</param>
+        /// <param name="cost">The cost at the end of the specified batch.</param>
+        public CostHistoryItem(Int32 batch, Double cost)
         {
-            if (epoch < 1)
+            if (batch < 1)
             {
-                throw new ArgumentException("Parameter 'epoch' much be greater than 0.", "epoch");
+                throw new ArgumentException("Parameter 'batch' much be greater than 0.", "batch");
             }
 
-            this.epoch = epoch;
+            this.batch = batch;
             this.cost = cost;
         }
     }
