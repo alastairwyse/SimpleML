@@ -9,7 +9,7 @@ In SimpleML, MMF is used to combine these example algorithms into different perm
 ##### Links
 
 For detailed information including sample use cases see...<br>
-[http://www.oraclepermissiongenerator.net/simpleml/](http://www.oraclepermissiongenerator.net/simpleml/index.html)
+[http://www.alastairwyse.net/simpleml/](http://www.alastairwyse.net/simpleml/index.html)
 
 ##### Notes
 - After opening the solution in Visual Studio, the referenced NuGet packages should be restored using the 'Restore' button in the 'Manage NuGet Packages' window.
